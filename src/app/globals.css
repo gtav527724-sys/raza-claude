@@ -1,0 +1,359 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-display: var(--font-unbounded), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme {
+  --color-limey: var(--acc);
+}
+
+html {
+  color-scheme: dark;
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--bg);
+  color: #fff;
+  font-family: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
+#app-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--acc) 85%, transparent);
+  color: var(--on-acc);
+}
+
+/* ---------- scrollbars ---------- */
+#app-scroll,
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+#app-scroll::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- glass system ---------- */
+.glass {
+  background: linear-gradient(
+    155deg,
+    rgba(var(--surface), 0.1),
+    rgba(var(--surface), 0.035) 55%,
+    rgba(var(--surface), 0.06)
+  );
+  -webkit-backdrop-filter: blur(24px) saturate(170%);
+  backdrop-filter: blur(24px) saturate(170%);
+  border: 1px solid rgba(var(--border), 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+    0 24px 60px -24px rgba(0, 0, 0, 0.75);
+}
+
+.glass-soft {
+  background: linear-gradient(155deg, rgba(var(--surface), 0.07), rgba(var(--surface), 0.03));
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(var(--border), 0.09);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glow-lime {
+  box-shadow:
+    0 12px 42px -8px rgba(198, 255, 63, 0.45),
+    0 2px 10px -2px rgba(198, 255, 63, 0.3);
+}
+
+.sheen {
+  position: relative;
+}
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(175deg, rgba(255, 255, 255, 0.1), transparent 38%);
+  pointer-events: none;
+}
+
+/* ---------- rotating luxe aura (pure transform = GPU) ---------- */
+@keyframes aura-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.aura {
+  background: conic-gradient(
+    from 0deg,
+    color-mix(in srgb, var(--acc) 26%, transparent),
+    color-mix(in srgb, var(--acc2) 28%, transparent),
+    color-mix(in srgb, var(--acc) 16%, transparent),
+    color-mix(in srgb, var(--acc2) 20%, transparent),
+    color-mix(in srgb, var(--acc) 26%, transparent)
+  );
+  filter: blur(64px);
+  -webkit-filter: blur(64px);
+  animation: aura-spin 18s linear infinite;
+  will-change: transform;
+}
+
+/* ---------- equalizer bars (transform-only for 60fps) ---------- */
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.24);
+  }
+  45% {
+    transform: scaleY(1);
+  }
+  70% {
+    transform: scaleY(0.48);
+  }
+}
+.eq-bar {
+  height: 100%;
+  transform: scaleY(0.4);
+  transform-origin: bottom;
+  animation: eq 0.85s ease-in-out infinite;
+  will-change: transform;
+}
+.eq-paused .eq-bar {
+  animation-play-state: paused;
+}
+
+/* ---------- marquee ---------- */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-inner {
+  animation: marquee 9s linear infinite;
+}
+
+/* ---------- ambient blobs ---------- */
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(50px, 34px) scale(1.1);
+  }
+}
+.blob-a {
+  animation: float-slow 16s ease-in-out infinite;
+}
+.blob-b {
+  animation: float-slow 20s ease-in-out infinite reverse;
+}
+
+/* ---------- film grain ---------- */
+.grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* ---------- range sliders ---------- */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+.slider::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    var(--acc) 0 var(--pct, 0%),
+    rgba(255, 255, 255, 0.14) var(--pct, 0%)
+  );
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 15px;
+  width: 15px;
+  margin-top: -5px;
+  border: none;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--acc) 16%, transparent),
+    0 0 14px color-mix(in srgb, var(--acc) 55%, transparent),
+    0 1px 8px rgba(0, 0, 0, 0.5);
+}
+.slider::-moz-range-track {
+  height: 5px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+.slider::-moz-range-progress {
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--acc);
+}
+.slider::-moz-range-thumb {
+  height: 15px;
+  width: 15px;
+  border: none;
+  border-radius: 9999px;
+  background: #fff;
+}
+.slider-slim::-webkit-slider-runnable-track {
+  height: 4px;
+}
+.slider-slim::-webkit-slider-thumb {
+  height: 12px;
+  width: 12px;
+  margin-top: -4px;
+  opacity: 0.9;
+}
+
+/* ---------- accessibility: honors reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .aura,
+  .eq-bar,
+  .blob-a,
+  .blob-b,
+  .marquee-inner {
+    animation-duration: 0.01s;
+    animation-iteration-count: 1;
+  }
+}
+
+/* ---------- dynamic accent + display modes ---------- */
+:root {
+  --acc: #c6ff3f;
+  --acc2: #8b5cf6;
+  --bg: #07070b;
+  --surface: 255, 255, 255;
+  --border: 255, 255, 255;
+  --blob1: rgba(198, 255, 63, 0.06);
+  --blob2: rgba(139, 92, 246, 0.08);
+  --blob3: rgba(34, 211, 238, 0.05);
+  --on-acc: #000000;
+}
+html.rm .blob-a,
+html.rm .blob-b,
+html.rm .aura,
+html.rm .marquee-inner {
+  animation: none !important;
+}
+html.perf .glass,
+html.perf .glass-soft {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: color-mix(in srgb, var(--bg) 92%, rgb(var(--surface))) !important;
+}
+html.perf .aura {
+  display: none !important;
+}
+html.amoled,
+html.amoled body,
+html.amoled #phone-frame {
+  background: #000 !important;
+}
+#phone-frame {
+  background: var(--bg);
+}
+.glow-lime {
+  box-shadow:
+    0 12px 42px -8px color-mix(in srgb, var(--acc) 45%, transparent),
+    0 2px 10px -2px color-mix(in srgb, var(--acc) 30%, transparent) !important;
+}
+
+/* ---------- vertical EQ sliders ---------- */
+.eq-vert {
+  -webkit-appearance: none;
+  appearance: none;
+  writing-mode: vertical-lr;
+  direction: rtl;
+  width: 26px;
+  height: 118px;
+  background: transparent;
+  cursor: pointer;
+}
+.eq-vert::-webkit-slider-runnable-track {
+  width: 5px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.eq-vert::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  background: var(--acc);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--acc) 60%, transparent);
+}
+.eq-vert::-moz-range-track {
+  width: 5px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+.eq-vert::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 9999px;
+  background: var(--acc);
+}
+
+/* ---------- scroll & paint performance ---------- */
+#app-scroll {
+  content-visibility: auto;
+  contain: layout style paint;
+}
+.glass,
+.glass-soft {
+  will-change: auto;
+}
+img {
+  content-visibility: auto;
+}
+
+/* ---------- theme customizer vars ---------- */
+:root {
+  --radius: 26px;
+  --font-scale: 1;
+  --glow: 1;
+  --blur-amt: 24px;
+}
+.glass {
+  border-radius: var(--radius);
+  backdrop-filter: blur(var(--blur-amt)) saturate(170%);
+  -webkit-backdrop-filter: blur(var(--blur-amt)) saturate(170%);
+}
+.glow-lime {
+  box-shadow:
+    0 12px 42px -8px color-mix(in srgb, var(--acc) calc(var(--glow) * 45%), transparent),
+    0 2px 10px -2px color-mix(in srgb, var(--acc) calc(var(--glow) * 30%), transparent) !important;
+}
+html.no-artshadow img {
+  box-shadow: none !important;
+}
