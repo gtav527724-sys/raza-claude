@@ -1,19 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  poweredByHeader: false,
   reactStrictMode: true,
-  async headers() {
-    return [
-      {
-        // Always fetch the newest service worker so deploys never serve a stale app.
-        source: "/sw.js",
-        headers: [
-          { key: "Cache-Control", value: "no-cache, no-store, must-revalidate" },
-          { key: "Service-Worker-Allowed", value: "/" },
-        ],
-      },
-    ];
+  // Keep the native YouTube extractor out of the webpack bundle —
+  // this is what makes the Vercel build reliable.
+  serverExternalPackages: ["@distube/ytdl-core"],
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
+  },
+  typescript: {
+    ignoreBuildErrors: false,
   },
 };
 
